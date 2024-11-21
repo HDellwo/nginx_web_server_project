@@ -1,5 +1,6 @@
 provider "aws" {
   region  = "us-east-1"
+#   profile = "default"
 }
 
 resource "time_static" "current_utc" {}
