@@ -1,7 +1,6 @@
 provider "aws" {
   region  = "us-east-1"
-#   profile = "default"
-}
+  }
 
 resource "time_static" "current_utc" {}
 
@@ -13,6 +12,7 @@ data "aws_ami" "ubuntu" {
     values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
   }
 }
+
 
 # Create SSH Key Pair for Bastion Host
 resource "tls_private_key" "bastion_ssh_key" {
