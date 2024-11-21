@@ -7,7 +7,7 @@ This project uses Terraform to create an advanced AWS infrastructure spanning tw
 1. **VPC and Subnets**: A Virtual Private Cloud (VPC) is created with both public and private subnets across two Availability Zones.
 2. **Internet Gateway and NAT Gateway**: Used to enable internet access for public subnets and outbound internet access for private subnets.
 3. **Route Tables**: Public and private route tables are configured to manage traffic flow.
-4. **Bastion Host**: A Bastion Host is deployed in a public subnet to allow SSH access to instances in private subnets.
+4. **Bastion Host**: A Bastion Host is deployed in a public subnet to allow SSH access to instances in private subnets. The private key is automatically uploaded and permissions are set via a user data script.
 5. **Application Load Balancer (ALB)**: Load balances HTTP traffic across instances in the private subnet.
 6. **Auto Scaling Group (ASG)**: Automatically manages the Nginx web servers to ensure scalability and resilience.
 
@@ -60,7 +60,7 @@ This project uses Terraform to create an advanced AWS infrastructure spanning tw
 
 ## Important Notes
 - **Security Groups**: The Bastion Host security group allows SSH access from anywhere (`0.0.0.0/0`). For a more secure deployment, restrict access to your specific IP address.
-- **SSH Key Management**: The private SSH key (`bastion_ssh_key.pem`) is uploaded to the Bastion Host automatically via a user data script. Ensure this file has restricted permissions (`chmod 400 bastion_ssh_key.pem`).
+- **SSH Key Management**: The private SSH key (`bastion_ssh_key.pem`) is created via Terraform and the permissions are automatically set to `chmod 400`. The key is then uploaded to the Bastion Host using a user data script, and permissions are properly configured to ensure secure access.
 - **Resource Cleanup**: To prevent ongoing costs, destroy the infrastructure when not in use:
    ```sh
    terraform destroy
@@ -75,4 +75,8 @@ This project uses Terraform to create an advanced AWS infrastructure spanning tw
 - **SSH Issues**: Ensure the key has the correct permissions and that the Bastion Host security group allows SSH access.
 
 ## Author
-- Created by: Harald Dellwo 
+- Created by: Harald Dellwo
+
+## License
+This project is licensed under the MIT License.
+
