@@ -1,15 +1,15 @@
 provider "aws" {
   region  = "us-east-1"
- }
+}
 
 resource "time_static" "current_utc" {}
 
-data "aws_ami" "amzn_linux" {
+data "aws_ami" "ubuntu" {
   most_recent = true
-  owners      = ["amazon"]
+  owners      = ["099720109477"]
   filter {
     name   = "name"
-    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+    values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
   }
 }
 
@@ -254,7 +254,7 @@ resource "aws_lb_listener" "http_listener" {
 # Create Launch Template for Auto Scaling Group
 resource "aws_launch_template" "sample_template" {
   name_prefix   = "sample-launch-template"
-  image_id      = data.aws_ami.amzn_linux.id
+  image_id = data.aws_ami.ubuntu.id
   instance_type = "t2.micro"
   key_name      = aws_key_pair.bastion_key_pair.key_name
 
@@ -292,7 +292,7 @@ resource "aws_autoscaling_group" "sample_asg" {
 
 # Create Bastion Host
 resource "aws_instance" "bastion_host" {
-  ami           = data.aws_ami.amzn_linux.id
+  ami = data.aws_ami.ubuntu.id
   instance_type = "t2.micro"
   subnet_id     = aws_subnet.public_subnet_a.id
   key_name      = aws_key_pair.bastion_key_pair.key_name
