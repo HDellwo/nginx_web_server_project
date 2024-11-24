@@ -13,6 +13,11 @@ output "Greetings" {
   description = "Greeting message."
 }
 
+output "asg_instance_key_name" {
+  value       = aws_key_pair.asg_key.key_name
+  description = "The key pair associated with the ASG instances."
+}
+
 data "aws_instances" "asg_instances" {
   filter {
     name   = "tag:Name"
@@ -23,9 +28,7 @@ data "aws_instances" "asg_instances" {
 output "asg_private_ips" {
   value = data.aws_instances.asg_instances.private_ips
   description = "Private IP addresses of ASG instances."
+  depends_on  = [aws_autoscaling_group.web_asg]
 }
 
-output "asg_instance_key_name" {
-  value       = aws_key_pair.asg_key.key_name
-  description = "The key pair associated with the ASG instances."
-}
+
